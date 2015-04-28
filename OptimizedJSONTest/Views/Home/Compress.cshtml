@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "Compress";
+}
+
+<h2>Compress</h2>
+
+@using (Html.BeginForm())
+{
+    
+    @Html.TextBox("str", (string)ViewBag.Str);
+    <input type="submit" />
+}
