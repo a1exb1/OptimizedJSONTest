@@ -20,6 +20,7 @@ namespace OptimizedJSONTest
             UTF8Encoding encoding = new UTF8Encoding();
             return encoding.GetString(bytes);
         }
+
     }
 
 }

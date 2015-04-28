@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Optimized_JSON_Compression;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -16,37 +17,39 @@ namespace OptimizedJSONTest.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            return RedirectToAction("Compress");
-        }
-
-        public ActionResult Compress()
-        {
-            string str = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-                "Etiam malesuada lectus id lectus scelerisque pulvinar. " +
-                "Etiam ut turpis libero, at condimentum turpis. " +
-                "Integer in purus ut purus eleifend posuere vel ut nibh. " +
-                "Praesent interdum rhoncus nisl, id consectetur orci luctus quis. " +
-                "Aliquam molestie ornare nisi a sollicitudin. " +
-                "Integer nec erat ut ipsum placerat tristique. " +
-                "In pulvinar sapien at erat ultricies iaculis. " +
-                "Maecenas mollis est sit amet urna scelerisque eu accumsan lacus rutrum. " +
-                "Donec purus metus, blandit dignissim varius id, porttitor sed metus. " +
-                "Cras nec sapien vitae sem porta dapibus eget sit amet eros. " +
-                "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. " +
-                "Suspendisse potenti. Sed id diam eget nisi laoreet scelerisque vitae vulputate lacus. " +
-                "Phasellus quis leo sapien, id hendrerit mi. Morbi feugiat mollis nisl id egestas.";
-
-
-            ViewBag.Str = Compressor.Compress(CompressionMethod.GZip, str).base64String;
             return View();
         }
+
 
         [HttpPost]
         public ActionResult Compress(string str)
         {
+            //str = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+            //    "Etiam malesuada lectus id lectus scelerisque pulvinar. " +
+            //    "Etiam ut turpis libero, at condimentum turpis. " +
+            //    "Integer in purus ut purus eleifend posuere vel ut nibh. " +
+            //    "Praesent interdum rhoncus nisl, id consectetur orci luctus quis. " +
+            //    "Aliquam molestie ornare nisi a sollicitudin. " +
+            //    "Integer nec erat ut ipsum placerat tristique. " +
+            //    "In pulvinar sapien at erat ultricies iaculis. " +
+            //    "Maecenas mollis est sit amet urna scelerisque eu accumsan lacus rutrum. " +
+            //    "Donec purus metus, blandit dignissim varius id, porttitor sed metus. " +
+            //    "Cras nec sapien vitae sem porta dapibus eget sit amet eros. " +
+            //    "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. " +
+            //    "Suspendisse potenti. Sed id diam eget nisi laoreet scelerisque vitae vulputate lacus. " +
+            //    "Phasellus quis leo sapien, id hendrerit mi. Morbi feugiat mollis nisl id egestas.";
+
+
+            ViewBag.CompressedString = Compressor.Compress(CompressionMethod.GZip, str).base64String;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Decompress(string str2)
+        {
             CompressedResult result = new CompressedResult
             {
-                base64String = str
+                base64String = str2
             };
             return Content(Compressor.Decompress(CompressionMethod.GZip, result).decompressedString);
         }

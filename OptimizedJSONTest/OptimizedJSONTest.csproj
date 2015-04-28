@@ -109,9 +109,10 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Classes\Compression\CompressedResult.cs" />
     <Compile Include="Classes\Compression\Compressor.cs" />
     <Compile Include="Classes\Compression\GZip.cs" />
-    <Compile Include="Classes\Convert+Extension.cs" />
+    <Compile Include="Classes\Converter.cs" />
     <Compile Include="Classes\OptimizedJsonResult.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -130,6 +131,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Home\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

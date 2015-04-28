@@ -18,7 +18,5 @@ namespace OptimizedJSONTest
             return new JavaScriptSerializer().Serialize(data);
         }
 
-        
-        
     }
 }

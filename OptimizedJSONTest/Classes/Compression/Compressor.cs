@@ -5,23 +5,11 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Web;
+using Optimized_JSON_Compression;
 
 
 namespace OptimizedJSONTest
 {
-    public class CompressedResult
-    {
-        public byte[] bytes;
-        public string base64String = "";
-
-    }
-
-    public class DecompressedResult {
-
-        
-        public byte[] bytes;
-        public string decompressedString = "";
-    }
 
     public enum CompressionMethod
     {
@@ -32,6 +20,7 @@ namespace OptimizedJSONTest
 
     public class Compressor
     {
+        private static Encoding encoder = UTF8Encoding.UTF8;
 
         public static CompressedResult Compress(CompressionMethod method, string str)
         {
@@ -39,19 +28,8 @@ namespace OptimizedJSONTest
 
             if (method == CompressionMethod.GZip)
             {
-                UTF8Encoding encoding = new UTF8Encoding();
-                byte[] dataBytes = encoding.GetBytes(str);
-
-                Console.WriteLine("Data length: " + dataBytes.Length);
-
+                byte[] dataBytes = encoder.GetBytes(str);
                 byte[] compressedData = GZip.Compress(dataBytes);
-
-                Console.WriteLine("Compressed length: " + compressedData.Length);
-
-                byte[] decompressedData = GZip.Decompress(compressedData);
-
-                Console.WriteLine("Decompressed length: " + decompressedData.Length);
-                Console.WriteLine("Decompressed string: " + encoding.GetString(decompressedData));
 
                 output.bytes = compressedData;
                 output.base64String = Convert.ToBase64String(compressedData);
@@ -67,13 +45,7 @@ namespace OptimizedJSONTest
             if (method == CompressionMethod.GZip)
             {
                 byte[] dataBytes = Convert.FromBase64String(compressedResult.base64String);
-
-                Console.WriteLine("Data length: " + dataBytes.Length);
-
                 byte[] decompressedData = GZip.Decompress(dataBytes);
-
-                Console.WriteLine("Decompressed length: " + decompressedData.Length);
-                Console.WriteLine("Decompressed string: " + Converter.BytesToString(decompressedData));
 
                 output.bytes = decompressedData;
                 output.decompressedString = Converter.BytesToString(decompressedData);
@@ -82,4 +54,5 @@ namespace OptimizedJSONTest
             return output;
         }
     }
+
 }

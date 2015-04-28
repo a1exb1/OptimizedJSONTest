@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<h2>Compress</h2>
+
+@using (Html.BeginForm("Compress", "Home", FormMethod.Post))
+{
+
+    @Html.TextBox("str");
+    <input type="submit" />
+}
