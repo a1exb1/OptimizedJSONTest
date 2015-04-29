@@ -1,17 +1,59 @@
 ﻿
 @{
     ViewBag.Title = "Compress";
+    Dictionary<String, Optimized_JSON_Compression.CompressedResult> compressedResults = ViewBag.CompressedResults;
+    Dictionary<String, Optimized_JSON_Compression.DecompressedResult> deCompressedResults = ViewBag.deCompressedResults;
 }
 
 <h2>Compress</h2>
 
 <p>
-    @((string)ViewBag.CompressedString))
+    @ViewBag.OriginalString 
+    
+    <br /><br />
+    (@Converter.StringToBytes(ViewBag.OriginalString).Length bytes)
 </p>
 
-@using (Html.BeginForm("Decompress", "Home", FormMethod.Post))
+<table class="table">
+    <thead>
+        <tr>
+            <th>Compression method</th>
+            <th>Bytes length</th>
+            <th>Compressed output</th>
+            <th>Decompressed result matches original</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>GZip</td>
+            <td>
+                @compressedResults["GZip"].bytes.Length
+            </td>
+            <td>
+                @*@compressedResults["GZip"].base64String*@
+            </td>
+            <td>
+                @(deCompressedResults["GZip"].decompressedString == ViewBag.OriginalString)
+            </td>
+        </tr>
+        <tr>
+            <td>LZ77</td>
+            <td>
+                @compressedResults["LZ77"].bytes.Length
+            </td>
+            <td>
+                @*@compressedResults["LZ77"].base64String*@
+            </td>
+            <td>
+                @(deCompressedResults["LZ77"].decompressedString == ViewBag.OriginalString)
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+@*@using (Html.BeginForm("Decompress", "Home", FormMethod.Post))
 {
 
-    @Html.Hidden("str2", (string)ViewBag.CompressedString);
+    @Html.TextArea("str2", (string)ViewBag.CompressedString);
     <button type="submit" >decompress</button>
-}
+}*@

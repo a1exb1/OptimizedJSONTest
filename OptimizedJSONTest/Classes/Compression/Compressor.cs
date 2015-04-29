@@ -22,34 +22,58 @@ namespace OptimizedJSONTest
     {
         private static Encoding encoder = UTF8Encoding.UTF8;
 
-        public static CompressedResult Compress(CompressionMethod method, string str)
+        public static Dictionary<string, CompressedResult> Compress(string str)
         {
-            var output = new CompressedResult();
+            var output = new Dictionary<string, CompressedResult>();
+            byte[] dataBytes = encoder.GetBytes(str);
 
-            if (method == CompressionMethod.GZip)
-            {
-                byte[] dataBytes = encoder.GetBytes(str);
-                byte[] compressedData = GZip.Compress(dataBytes);
+            //GZip
+            byte[] gZipCompressedData = GZip.Compress(dataBytes);
 
-                output.bytes = compressedData;
-                output.base64String = Convert.ToBase64String(compressedData);
-            }
+            var gZipResult = new CompressedResult();
+            gZipResult.bytes = gZipCompressedData;
+            gZipResult.base64String = Convert.ToBase64String(gZipCompressedData);
+
+            output["GZip"] = gZipResult;
+
+            //LZ77
+
+            byte[] lz77CompressedData = LZ77.Compress(dataBytes);
+
+            var lz77Result = new CompressedResult();
+            lz77Result.bytes = lz77CompressedData;
+            lz77Result.base64String = Convert.ToBase64String(lz77CompressedData);
+
+            output["LZ77"] = lz77Result;
 
             return output;
         }
 
-        public static DecompressedResult Decompress(CompressionMethod method, CompressedResult compressedResult)
+        public static Dictionary<String, DecompressedResult> Decompress(Dictionary<String, CompressedResult> compressedResults)
         {
-            var output = new DecompressedResult();
+            var output = new Dictionary<String, DecompressedResult>();
+            
+            // Gzip
+            var gZipCompressedResult = compressedResults["GZip"];
+            byte[] dataBytes = Convert.FromBase64String(gZipCompressedResult.base64String);
+            byte[] decompressedData = GZip.Decompress(dataBytes);
 
-            if (method == CompressionMethod.GZip)
-            {
-                byte[] dataBytes = Convert.FromBase64String(compressedResult.base64String);
-                byte[] decompressedData = GZip.Decompress(dataBytes);
+            var gZipResult = new DecompressedResult();
+            gZipResult.bytes = decompressedData;
+            gZipResult.decompressedString = Converter.BytesToString(decompressedData);
 
-                output.bytes = decompressedData;
-                output.decompressedString = Converter.BytesToString(decompressedData);
-            }
+            output["GZip"] = gZipResult;
+
+            // lz77
+            var lz77CompressedResult = compressedResults["LZ77"];
+            dataBytes = Convert.FromBase64String(lz77CompressedResult.base64String);
+            decompressedData = LZ77.Decompress(dataBytes);
+
+            var lz77Result = new DecompressedResult();
+            lz77Result.bytes = decompressedData;
+            lz77Result.decompressedString = Converter.BytesToString(decompressedData);
+
+            output["LZ77"] = gZipResult;
 
             return output;
         }

@@ -39,20 +39,24 @@ namespace OptimizedJSONTest.Controllers
             //    "Suspendisse potenti. Sed id diam eget nisi laoreet scelerisque vitae vulputate lacus. " +
             //    "Phasellus quis leo sapien, id hendrerit mi. Morbi feugiat mollis nisl id egestas.";
 
+            var compressedResults = Compressor.Compress(str);
+            ViewBag.CompressedResults = compressedResults;
 
-            ViewBag.CompressedString = Compressor.Compress(CompressionMethod.GZip, str).base64String;
+            ViewBag.OriginalString = str;
+            ViewBag.DecompressedResults = Compressor.Decompress(compressedResults); 
+
             return View();
         }
 
-        [HttpPost]
-        public ActionResult Decompress(string str2)
-        {
-            CompressedResult result = new CompressedResult
-            {
-                base64String = str2
-            };
-            return Content(Compressor.Decompress(CompressionMethod.GZip, result).decompressedString);
-        }
+        //[HttpPost]
+        //public ActionResult Decompress(string str2)
+        //{
+        //    CompressedResult result = new CompressedResult
+        //    {
+        //        base64String = str2
+        //    };
+        //    return Content(Compressor.Decompress(result).decompressedString);
+        //}
 
         public ActionResult rsa()
         {
