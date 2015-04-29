@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace OptimizedJSONTest
+namespace Optimized_JSON_Compression
 {
     public class Converter
     {

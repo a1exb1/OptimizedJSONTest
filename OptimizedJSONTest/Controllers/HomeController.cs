@@ -39,7 +39,11 @@ namespace OptimizedJSONTest.Controllers
             //    "Suspendisse potenti. Sed id diam eget nisi laoreet scelerisque vitae vulputate lacus. " +
             //    "Phasellus quis leo sapien, id hendrerit mi. Morbi feugiat mollis nisl id egestas.";
 
-            var compressedResults = Compressor.Compress(str);
+            List<CompressionMethod> methods = new List<CompressionMethod>();
+            methods.Add(CompressionMethod.GZip);
+            methods.Add(CompressionMethod.LZ77);
+
+            var compressedResults = Compressor.Compress(methods, str);
             ViewBag.CompressedResults = compressedResults;
 
             ViewBag.OriginalString = str;

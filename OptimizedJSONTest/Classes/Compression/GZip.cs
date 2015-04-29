@@ -5,7 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Web;
 
-namespace OptimizedJSONTest
+namespace Optimized_JSON_Compression
 {
     public class GZip
     {

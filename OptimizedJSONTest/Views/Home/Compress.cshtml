@@ -1,8 +1,9 @@
 ﻿
 @{
     ViewBag.Title = "Compress";
-    Dictionary<String, Optimized_JSON_Compression.CompressedResult> compressedResults = ViewBag.CompressedResults;
-    Dictionary<String, Optimized_JSON_Compression.DecompressedResult> deCompressedResults = ViewBag.deCompressedResults;
+    List<Optimized_JSON_Compression.CompressedResult> compressedResults = ViewBag.CompressedResults;
+    List<Optimized_JSON_Compression.DecompressedResult> deCompressedResults = ViewBag.deCompressedResults;
+    string originalString = ViewBag.OriginalString;
 }
 
 <h2>Compress</h2>
@@ -11,7 +12,7 @@
     @ViewBag.OriginalString 
     
     <br /><br />
-    (@Converter.StringToBytes(ViewBag.OriginalString).Length bytes)
+    (@Optimized_JSON_Compression.Converter.StringToBytes(ViewBag.OriginalString).Length bytes)
 </p>
 
 <table class="table">
@@ -20,34 +21,32 @@
             <th>Compression method</th>
             <th>Bytes length</th>
             <th>Compressed output</th>
-            <th>Decompressed result matches original</th>
+            <th>matches original </th>
+            <th>less than original</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>GZip</td>
-            <td>
-                @compressedResults["GZip"].bytes.Length
-            </td>
-            <td>
-                @*@compressedResults["GZip"].base64String*@
-            </td>
-            <td>
-                @(deCompressedResults["GZip"].decompressedString == ViewBag.OriginalString)
-            </td>
-        </tr>
-        <tr>
-            <td>LZ77</td>
-            <td>
-                @compressedResults["LZ77"].bytes.Length
-            </td>
-            <td>
-                @*@compressedResults["LZ77"].base64String*@
-            </td>
-            <td>
-                @(deCompressedResults["LZ77"].decompressedString == ViewBag.OriginalString)
-            </td>
-        </tr>
+        @for (int i = 0; i < compressedResults.Count(); i++)
+        {
+            var compressedResult = compressedResults[i];
+            var deCompressedResult = deCompressedResults[i];
+
+            <tr>
+                <td>
+                    @compressedResult.method.ToString()
+                </td>
+                <td>
+                    @compressedResult.bytes.Length
+                </td>
+                <td></td>
+                <td>
+                    @(deCompressedResult.decompressedString == ViewBag.OriginalString)
+                </td>
+                <td>
+                    @(compressedResult.bytes.Length < Optimized_JSON_Compression.Converter.StringToBytes(originalString).Length)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
